@@ -1,6 +1,9 @@
 # recipe_search_app
 
-A new Flutter project.
+Search your favorite recipe.
+
+Api used: https://www.themealdb.com/api.php
+Firbase implemented for saving recipe.
 
 ## Getting Started
 

@@ -14,7 +14,7 @@ class SplashScreen extends StatelessWidget {
               color: Colors.yellow,
             ),
             Text(
-              'Make a Dish',
+              'Make a Dish - search your recipe',
               style: TextStyle(fontSize: 28, fontFamily: 'Nunito'),
             ),
           ],

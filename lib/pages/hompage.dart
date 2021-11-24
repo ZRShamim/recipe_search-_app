@@ -4,6 +4,7 @@ import 'package:recipe_search_app/providers/recipe_provider.dart';
 import 'package:recipe_search_app/widgets/recipe_grid.dart';
 
 class HomePage extends StatefulWidget {
+  static const routeName = '/home-page';
   @override
   State<HomePage> createState() => _HomePageState();
 }

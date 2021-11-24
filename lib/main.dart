@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_search_app/pages/hompage.dart';
 import 'package:recipe_search_app/pages/recipe_details.dart';
+import 'package:recipe_search_app/pages/splash_screen.dart';
 import 'package:recipe_search_app/providers/recipe_provider.dart';
 
 void main() {
@@ -21,8 +22,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Search Recipe',
-        home: HomePage(),
+        home: SplashScreen(),
         routes: {
+          HomePage.routeName: (ctx) => HomePage(),
           RecipeDetails.routeName: (ctx) => RecipeDetails(),
         },
       ),

@@ -1,4 +1,10 @@
-# recipe_search_app
+# Make a Dish - A recipe searching app
+<img src="https://github.com/dinurymomshad/listify/blob/main/assets/App%20Logo.png" height=70 align="left"> 
+<p>
+  A recipe search app with cool UI. Search meal in search bar, also can save your meal in food detail page for cook it later.
+</p>
+
+
 
 Search your favorite recipe.
 

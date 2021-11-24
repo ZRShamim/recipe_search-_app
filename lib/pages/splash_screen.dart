@@ -19,6 +19,7 @@ class SplashScreen extends StatelessWidget {
             ),
           ],
         ),
+        duration: 2000,
         nextScreen: HomePage(),
         splashTransition: SplashTransition.fadeTransition);
   }

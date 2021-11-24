@@ -9,12 +9,12 @@ class SplashScreen extends StatelessWidget {
         splash: Column(
           children: const [
             Icon(
-              Icons.restaurant_menu,
+              Icons.restaurant,
               size: 45,
               color: Colors.yellow,
             ),
             Text(
-              'Make a Dish - search your recipe',
+              'Make a Dish',
               style: TextStyle(fontSize: 28, fontFamily: 'Nunito'),
             ),
           ],

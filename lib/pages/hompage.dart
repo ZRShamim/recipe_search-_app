@@ -138,8 +138,16 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                _showAll?
                 const Text(
-                  'Recomended',
+                  'Search Result',
+                  style: TextStyle(
+                    fontFamily: 'Lora',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 25,
+                  ),
+                ):const Text(
+                  'Saved Recipe',
                   style: TextStyle(
                     fontFamily: 'Lora',
                     fontWeight: FontWeight.w700,

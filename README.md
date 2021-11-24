@@ -52,7 +52,7 @@ For managing state I am using provider ^6.0.1. All the screens are in pages fold
 
 ## Api and others: 
 ```
-Thea MealDb: https://www.themealdb.com/api.php
+The MealDb: https://www.themealdb.com/api.php
 Firbase: For saving the recipe.
 ```
 

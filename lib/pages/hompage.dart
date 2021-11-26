@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_search_app/providers/recipe_provider.dart';
+import 'package:recipe_search_app/widgets/fav_all_change_btn.dart';
 import 'package:recipe_search_app/widgets/recipe_grid.dart';
+import 'package:recipe_search_app/widgets/result_title.dart';
+import 'package:recipe_search_app/widgets/progress_indicator.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home-page';
@@ -14,14 +17,16 @@ class _HomePageState extends State<HomePage> {
   var _showFav = false;
   var _showAll = true;
   var _isInit = true;
-  TextEditingController mycontroller = TextEditingController();
-  Future<void> loadData() async {
+  TextEditingController myController = TextEditingController();
+  Future<void> loadData(String cat) async {
+    // print(cat);
     setState(() {
       _isLoading = true;
     });
     try {
+      // print(cat);
       await Provider.of<RecipesProvieder>(context, listen: false)
-          .fetchAndSetRecipe(mycontroller.text);
+          .fetchAndSetRecipeCategory(myController.text, cat);
     } catch (error) {
       await showDialog(
           context: context,
@@ -57,6 +62,8 @@ class _HomePageState extends State<HomePage> {
           _isLoading = false;
         });
       });
+      Provider.of<RecipesProvieder>(context, listen: false)
+          .fetchAndSetRecipeCategories();
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -107,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                         cursorColor: Colors.white30,
                         textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.text,
-                        controller: mycontroller,
+                        controller: myController,
                         decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Find Recipe',
@@ -127,33 +134,50 @@ class _HomePageState extends State<HomePage> {
                     ),
                     child: IconButton(
                         onPressed: () {
-                          loadData();
+                          loadData('null');
                         },
                         icon: const Icon(Icons.search)))
               ],
             ),
             const SizedBox(
-              height: 25,
+              height: 15,
+            ),
+            SizedBox(
+              height: 40,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: data.categories.length,
+                itemBuilder: (ctx, index) {
+                  return Container(
+                      margin: const EdgeInsets.only(right: 8),
+                      padding: const EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                          color: Colors.yellow,
+                          borderRadius: BorderRadius.circular(50)),
+                      child: TextButton(
+                          onPressed: () {
+                            loadData(data.categories[index].categoryName);
+                            
+                          },
+                          child: Text(
+                            data.categories[index].categoryName,
+                            style: const TextStyle(
+                                fontSize: 16,
+                                fontFamily: 'Nunito',
+                                color: Colors.red),
+                          )));
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 10,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _showAll?
-                const Text(
-                  'Search Result',
-                  style: TextStyle(
-                    fontFamily: 'Lora',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 25,
-                  ),
-                ):const Text(
-                  'Saved Recipe',
-                  style: TextStyle(
-                    fontFamily: 'Lora',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 25,
-                  ),
-                ),
+                _showAll
+                    ? ResultTitle('Search Result')
+                    : ResultTitle('Saved Recipe'),
                 _showAll
                     ? TextButton(
                         onPressed: () {
@@ -162,14 +186,7 @@ class _HomePageState extends State<HomePage> {
                             _showAll = false;
                           });
                         },
-                        child: const Text(
-                          'Show Saved',
-                          style: TextStyle(
-                            fontFamily: 'Nunito',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                          ),
-                        ),
+                        child: FavAllChangeBtn('Show Saved'),
                       )
                     : TextButton(
                         onPressed: () {
@@ -178,30 +195,16 @@ class _HomePageState extends State<HomePage> {
                             _showAll = true;
                           });
                         },
-                        child: const Text(
-                          'See All',
-                          style: TextStyle(
-                            fontFamily: 'Nunito',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 15,
-                          ),
-                        ),
+                        child: FavAllChangeBtn('See All'),
                       ),
               ],
             ),
             if (_showFav)
               _isLoading
-                  ? const Padding(
-                      padding: EdgeInsets.only(top: 150),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.yellow,
-                        ),
-                      ),
-                    )
+                  ? ProgressIndicatorWidget()
                   : RecipeGrid(recipe: data.recipesFav)
             else
-              mycontroller.text.isEmpty
+              myController.text.isEmpty || data.recipes.isEmpty
                   ? const Padding(
                       padding: EdgeInsets.only(top: 150),
                       child: Center(
@@ -216,14 +219,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     )
                   : _isLoading
-                      ? const Padding(
-                          padding: EdgeInsets.only(top: 150),
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.yellow,
-                            ),
-                          ),
-                        )
+                      ? ProgressIndicatorWidget()
                       : RecipeGrid(recipe: data.recipes)
           ],
         ),

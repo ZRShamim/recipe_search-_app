@@ -7,12 +7,11 @@ class Tag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        alignment: Alignment.center,
-        width: 85,
-        height: 30,
-        decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.circular(30)),
-        child: Text(tag));
+    return Text(tag, style: TextStyle(
+      color: color,
+      fontFamily: 'Nunito',
+      fontWeight: FontWeight.w700,
+      fontSize: 16
+    ),);
   }
 }

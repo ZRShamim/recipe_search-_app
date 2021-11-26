@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:recipe_search_app/providers/category.dart';
 import 'package:recipe_search_app/providers/recipe.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,6 +9,12 @@ class RecipesProvieder with ChangeNotifier {
 
   List<Recipe> get recipes {
     return [..._recipes];
+  }
+
+  List<Category> _categories = [];
+
+  List<Category> get categories {
+    return [..._categories];
   }
 
   List<Recipe> _recipesFav = [];
@@ -19,7 +26,7 @@ class RecipesProvieder with ChangeNotifier {
   // List<Recipe> get favoriteItems {
   //   return _recipes.where((recipe) => recipe.isFavorite == true).toList();
   // }
-// fetch data from mealDB
+// fetch data rcipe data from mealDB
   Future<void> fetchAndSetRecipe(String text) async {
     final url = 'https://www.themealdb.com/api/json/v1/1/search.php?s=$text';
     try {
@@ -42,7 +49,6 @@ class RecipesProvieder with ChangeNotifier {
         ));
       });
       _recipes = _loadedRecipe;
-
       notifyListeners();
     } catch (error) {
       rethrow;
@@ -164,7 +170,8 @@ class RecipesProvieder with ChangeNotifier {
   Future<void> deleteProduct(String saveId) async {
     final url =
         'https://shop-app-zrs-default-rtdb.asia-southeast1.firebasedatabase.app/products/$saveId.json';
-    final existingProductIndex = _recipesFav.indexWhere((item) => item.saveId == saveId);
+    final existingProductIndex =
+        _recipesFav.indexWhere((item) => item.saveId == saveId);
     Recipe? existingProduct = _recipesFav[existingProductIndex];
     _recipesFav.removeAt(existingProductIndex);
     notifyListeners();
@@ -174,5 +181,70 @@ class RecipesProvieder with ChangeNotifier {
       notifyListeners();
     }
     existingProduct = null;
+  }
+
+  Future<void> fetchAndSetRecipeCategory(String text, String category) async {
+    // print(category);
+    final url = 'https://www.themealdb.com/api/json/v1/1/search.php?s=$text';
+    try {
+      final response = await http.get(Uri.parse(url));
+      final data = json.decode(response.body);
+      final extractedData = data['meals'];
+      final List<Recipe> _loadedRecipe = [];
+      if (extractedData == null) {
+        return;
+      }
+      extractedData.asMap().forEach((key, data) {
+        if (category != 'null') {
+          if (data['strCategory'] == category) {
+            _loadedRecipe.add(Recipe(
+              recipeId: data['idMeal'],
+              recipeName: data['strMeal'],
+              recipeImage: data['strMealThumb'],
+              recipeDescription: data['strInstructions'],
+              recipeCategory: data['strCategory'],
+              recipeArea: data['strArea'],
+            ));
+          } else {
+            return;
+          }
+        } else {
+          _loadedRecipe.add(Recipe(
+            recipeId: data['idMeal'],
+            recipeName: data['strMeal'],
+            recipeImage: data['strMealThumb'],
+            recipeDescription: data['strInstructions'],
+            recipeCategory: data['strCategory'],
+            recipeArea: data['strArea'],
+          ));
+        }
+      });
+      _recipes = _loadedRecipe;
+      // print(_recipes[0].recipeCategory);
+      notifyListeners();
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<void> fetchAndSetRecipeCategories() async {
+    const url = 'https://www.themealdb.com/api/json/v1/1/categories.php';
+    try {
+      final response = await http.get(Uri.parse(url));
+      final data = json.decode(response.body);
+      final extractedData = data['categories'];
+      final List<Category> _loadedRecipe = [];
+
+      if (extractedData == null) {
+        return;
+      }
+      extractedData.asMap().forEach((key, data) {
+        _loadedRecipe.add(Category(categoryName: data['strCategory']));
+      });
+      _categories = _loadedRecipe;
+      notifyListeners();
+    } catch (error) {
+      rethrow;
+    }
   }
 }

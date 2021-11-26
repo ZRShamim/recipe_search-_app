@@ -25,6 +25,4 @@ class Recipe with ChangeNotifier {
     isSaved = !isSaved;
     notifyListeners();
   }
-
-
 }

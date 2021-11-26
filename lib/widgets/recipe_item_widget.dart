@@ -15,7 +15,6 @@ class RecipeItem extends StatelessWidget {
       'recipeDescription': recipe.recipeDescription,
       'recipeCategory': recipe.recipeCategory,
       'recipeArea': recipe.recipeArea,
-      'saveId' : recipe.saveId,
     };
     return Padding(
       padding: const EdgeInsets.all(10),
@@ -49,15 +48,14 @@ class RecipeItem extends StatelessWidget {
                       fontWeight: FontWeight.w700),
                 ),
               ),
-              trailing: Row(
-                      children: [
-                        Tag(recipe.recipeCategory, Colors.redAccent),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Tag(recipe.recipeArea, Colors.green),
-                      ],
-                    ),
+              trailing: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Tag(recipe.recipeCategory, Colors.yellow),
+                  ],
+                ),
+              ),
               title: Text(
                 recipe.recipeName,
                 textAlign: TextAlign.center,

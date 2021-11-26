@@ -21,7 +21,6 @@ class _RecipeDetailsState extends State<RecipeDetails> {
     final recipeDescription = recipeData['recipeDescription'];
     final recipeCategory = recipeData['recipeCategory'];
     final recipeArea = recipeData['recipeArea'];
-    final saveId = recipeData['saveId'];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -63,11 +62,11 @@ class _RecipeDetailsState extends State<RecipeDetails> {
                     ),
                     Row(
                       children: [
-                        Tag(recipeCategory, Colors.redAccent),
+                        Tag(recipeCategory, Colors.orange),
                         const SizedBox(
                           width: 5,
                         ),
-                        Tag(recipeArea, Colors.green),
+                        Tag(recipeArea, Colors.orangeAccent),
                       ],
                     ),
                   ],

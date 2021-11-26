@@ -8,7 +8,6 @@ class Recipe with ChangeNotifier {
   final String recipeDescription;
   final String recipeCategory;
   final String recipeArea;
-  bool isSaved;
 
   Recipe({
     required this.recipeId,
@@ -18,11 +17,5 @@ class Recipe with ChangeNotifier {
     required this.recipeDescription,
     required this.recipeCategory,
     required this.recipeArea,
-    this.isSaved = false,
   });
-
-  void toggleSave() {
-    isSaved = !isSaved;
-    notifyListeners();
-  }
 }

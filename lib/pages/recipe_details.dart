@@ -27,13 +27,18 @@ class _RecipeDetailsState extends State<RecipeDetails> {
         iconTheme: const IconThemeData(color: Colors.deepOrangeAccent),
         elevation: 0,
         actions: [
-          IconButton(
+          TextButton(
             onPressed: () {
               recipe.saveRecipe(recipeId, recipeName, recipeImage,
                   recipeDescription, recipeCategory, recipeArea);
               setState(() {});
             },
-            icon: const Icon(Icons.add),
+            child: const Text('Save',
+              style: TextStyle(
+                color: Colors.amber,
+                fontSize: 20
+              ),
+            ),
           ),
         ],
       ),

@@ -23,9 +23,6 @@ class RecipesProvieder with ChangeNotifier {
     return [..._recipesFav];
   }
 
-  // List<Recipe> get favoriteItems {
-  //   return _recipes.where((recipe) => recipe.isFavorite == true).toList();
-  // }
 // fetch data rcipe data from mealDB
   Future<void> fetchAndSetRecipe(String text) async {
     final url = 'https://www.themealdb.com/api/json/v1/1/search.php?s=$text';
@@ -65,47 +62,17 @@ class RecipesProvieder with ChangeNotifier {
       String recipeArea) async {
     const url =
         'https://recipesearchapp-aada5-default-rtdb.asia-southeast1.firebasedatabase.app/favorite.json';
-    // First checking if the saved reciped has been saved before so fetching the existing data from firebase
+    var _isSaved = false;
     try {
       final res = await http.get(Uri.parse(url));
       final extractedData = json.decode(res.body) as Map<String, dynamic>?;
       final List<Recipe> _loadedRecipe = [];
-      // If the firbase is not null, so checking if the saved recipe existed in firbase
       if (extractedData != null) {
-        extractedData.forEach((key, data) async {
-          if (recipeId != data['recipeId']) {
-            try {
-              final respon = await http.post(
-                Uri.parse(url),
-                body: json.encode({
-                  'recipeId': recipeId,
-                  'recipeName': recipeName,
-                  'recipeImage': recipeImage,
-                  'recipeDescription': recipeDescription,
-                  'recipeCategory': recipeCategory,
-                  'recipeArea': recipeArea,
-                  'isSave': true,
-                }),
-              );
-              final newSave = Recipe(
-                  recipeId: recipeId,
-                  saveId: json.decode(respon.body)['name'],
-                  recipeName: recipeName,
-                  recipeImage: recipeImage,
-                  recipeDescription: recipeDescription,
-                  recipeCategory: recipeCategory,
-                  recipeArea: recipeArea,
-                  isSaved: true);
-              _recipesFav.add(newSave);
-              notifyListeners();
-            } catch (error) {
-              rethrow;
-            }
+        extractedData.forEach((key, data) {
+          if (recipeId == data['recipeId']) {
+            _isSaved = true;
           }
         });
-        _recipes = _loadedRecipe;
-        notifyListeners();
-        // if the fire base is null so save the recipe
       } else {
         try {
           final response = await http.post(
@@ -117,18 +84,46 @@ class RecipesProvieder with ChangeNotifier {
               'recipeDescription': recipeDescription,
               'recipeCategory': recipeCategory,
               'recipeArea': recipeArea,
-              'isSave': true,
             }),
           );
           final newSave = Recipe(
-              recipeId: recipeId,
-              saveId: json.decode(response.body)['name'],
-              recipeName: recipeName,
-              recipeImage: recipeImage,
-              recipeDescription: recipeDescription,
-              recipeCategory: recipeCategory,
-              recipeArea: recipeArea,
-              isSaved: true);
+            recipeId: recipeId,
+            saveId: json.decode(response.body)['name'],
+            recipeName: recipeName,
+            recipeImage: recipeImage,
+            recipeDescription: recipeDescription,
+            recipeCategory: recipeCategory,
+            recipeArea: recipeArea,
+          );
+          _recipesFav.add(newSave);
+          notifyListeners();
+        } catch (error) {
+          rethrow;
+        }
+        return;
+      }
+      if (!_isSaved) {
+        try {
+          final respon = await http.post(
+            Uri.parse(url),
+            body: json.encode({
+              'recipeId': recipeId,
+              'recipeName': recipeName,
+              'recipeImage': recipeImage,
+              'recipeDescription': recipeDescription,
+              'recipeCategory': recipeCategory,
+              'recipeArea': recipeArea,
+            }),
+          );
+          final newSave = Recipe(
+            recipeId: recipeId,
+            saveId: json.decode(respon.body)['name'],
+            recipeName: recipeName,
+            recipeImage: recipeImage,
+            recipeDescription: recipeDescription,
+            recipeCategory: recipeCategory,
+            recipeArea: recipeArea,
+          );
           _recipesFav.add(newSave);
           notifyListeners();
         } catch (error) {
@@ -168,8 +163,8 @@ class RecipesProvieder with ChangeNotifier {
 
   // Didn't implemented yet
   Future<void> deleteProduct(String saveId) async {
-    final url =
-        'https://shop-app-zrs-default-rtdb.asia-southeast1.firebasedatabase.app/products/$saveId.json';
+    const url =
+        'https://recipesearchapp-aada5-default-rtdb.asia-southeast1.firebasedatabase.app/favorite.json';
     final existingProductIndex =
         _recipesFav.indexWhere((item) => item.saveId == saveId);
     Recipe? existingProduct = _recipesFav[existingProductIndex];
@@ -195,7 +190,7 @@ class RecipesProvieder with ChangeNotifier {
         return;
       }
       extractedData.asMap().forEach((key, data) {
-        if (category != 'null') {
+        if (category != 'All') {
           if (data['strCategory'] == category) {
             _loadedRecipe.add(Recipe(
               recipeId: data['idMeal'],
@@ -220,7 +215,6 @@ class RecipesProvieder with ChangeNotifier {
         }
       });
       _recipes = _loadedRecipe;
-      // print(_recipes[0].recipeCategory);
       notifyListeners();
     } catch (error) {
       rethrow;
@@ -241,6 +235,7 @@ class RecipesProvieder with ChangeNotifier {
       extractedData.asMap().forEach((key, data) {
         _loadedRecipe.add(Category(categoryName: data['strCategory']));
       });
+      _loadedRecipe.insert(0, Category(categoryName: 'All'));
       _categories = _loadedRecipe;
       notifyListeners();
     } catch (error) {

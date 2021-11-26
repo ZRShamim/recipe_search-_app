@@ -17,6 +17,7 @@ class _HomePageState extends State<HomePage> {
   var _showFav = false;
   var _showAll = true;
   var _isInit = true;
+  var _active = false;
   TextEditingController myController = TextEditingController();
   Future<void> loadData(String cat) async {
     // print(cat);
@@ -135,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     child: IconButton(
                         onPressed: () {
-                          loadData('null');
+                          loadData('All');
                         },
                         icon: const Icon(Icons.search)))
               ],
@@ -150,22 +151,23 @@ class _HomePageState extends State<HomePage> {
                 itemCount: data.categories.length,
                 itemBuilder: (ctx, index) {
                   return Container(
-                      margin: const EdgeInsets.only(right: 8),
-                      padding: const EdgeInsets.all(2),
+                      margin: const EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 15),
                       decoration: BoxDecoration(
                           color: Colors.yellow,
                           borderRadius: BorderRadius.circular(50)),
                       child: TextButton(
                           onPressed: () {
                             loadData(data.categories[index].categoryName);
-                            
                           },
                           child: Text(
                             data.categories[index].categoryName,
                             style: const TextStyle(
                                 fontSize: 16,
                                 fontFamily: 'Nunito',
-                                color: Colors.red),
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500
+                                ),
                           )));
                 },
               ),

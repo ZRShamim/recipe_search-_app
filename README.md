@@ -1,15 +1,68 @@
 # Make a Dish - A recipe searching app
-<img src="https://github.com/dinurymomshad/listify/blob/main/assets/App%20Logo.png" height=70 align="left"> 
+
 <p>
   A recipe search app with cool UI. Search meal in search bar, also can save your meal in food detail page for cook it later.
 </p>
 
+<table>
+  <tr>
+    <td>Splash Screen</td>
+     <td>Search Result Page</td>
+     <td>Saved Recipe</td>
+     <td>Details Page</td>
+  </tr>
+  <tr>
+    <td><img src="https://raw.githubusercontent.com/ZRShamim/recipe_search-_app/main/assets/screenshots/splash_screen.png" width=270 ></td>
+    <td><img src="https://raw.githubusercontent.com/ZRShamim/recipe_search-_app/main/assets/screenshots/save_page.png" width=270 ></td>
+    <td><img src="https://raw.githubusercontent.com/ZRShamim/recipe_search-_app/main/assets/screenshots/search_recipe_page.png" width=270 ></td>
+    <td><img src="https://raw.githubusercontent.com/ZRShamim/recipe_search-_app/main/assets/screenshots/recipe_details.png" width=270 ></td>
+  </tr>
+ </table>
 
+## Project Environment:
+```
+Flutter 2.5.3 • channel stable • https://github.com/flutter/flutter.git
+Framework • revision 18116933e7 (6 weeks ago) • 2021-10-15 10:46:35 -0700
+Engine • revision d3ea636dc5
+Tools • Dart 2.14.4
+```
 
-Search your favorite recipe.
+## Code Flow:
+For managing state I am using provider ^6.0.1. All the screens are in pages folder and UI components are inside widget folder.
 
-Api used: https://www.themealdb.com/api.php
-Firbase implemented for saving recipe.
+```
+└── lib/
+    ├── pages/
+    │   └── different UI pages
+    ├── providers/
+    │   └── state management
+    ├── widgets/
+    │   └── UI components
+    └── styles/
+        └── colors
+    
+```
+## Feature List
+```
+├── Search recipe in search bar
+├── Details page
+└── Save recipe for later use
+
+```
+
+## Api and others: 
+```
+The MealDb: https://www.themealdb.com/api.php
+Firbase: For saving the recipe.
+```
+
+## To-DO
+```
+├── Add User Authentication
+├── Remove saved recipe
+├── Add more information in detail page
+└── Add category Slider
+```
 
 ## Getting Started
 

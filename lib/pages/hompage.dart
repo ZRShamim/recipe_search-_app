@@ -73,6 +73,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final data = Provider.of<RecipesProvieder>(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         backgroundColor: Colors.grey[200],

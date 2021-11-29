@@ -17,6 +17,7 @@ class _HomePageState extends State<HomePage> {
   var _showFav = false;
   var _showAll = true;
   var _isInit = true;
+  var _showCategorySlider = false;
   TextEditingController myController = TextEditingController();
   Future<void> loadData(String cat) async {
     // print(cat);
@@ -71,108 +72,167 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
     final data = Provider.of<RecipesProvieder>(context);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         backgroundColor: Colors.grey[200],
         elevation: 0,
+        toolbarHeight: isLandscape ? 5 : 30,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Hello John',
-              style: TextStyle(fontSize: 20, fontFamily: 'Nunito'),
-            ),
-            const Text(
-              'Ready to cook?',
-              style: TextStyle(
-                  fontSize: 30,
-                  fontFamily: 'Lora',
-                  fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 25,
-            ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Flexible(
-                  child: Container(
-                    height: 50,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          bottomLeft: Radius.circular(10)),
-                      color: Colors.white,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Hello John',
+                      style: TextStyle(fontSize: 20, fontFamily: 'Nunito'),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: TextField(
-                        cursorColor: Colors.white30,
-                        textInputAction: TextInputAction.done,
-                        keyboardType: TextInputType.text,
-                        controller: myController,
-                        decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Find Recipe',
-                            hintStyle:
-                                TextStyle(fontFamily: 'Nunito', fontSize: 18)),
-                      ),
+                    Text(
+                      'Ready to cook?',
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontFamily: 'Lora',
+                          fontWeight: FontWeight.bold),
                     ),
-                  ),
+                  ],
                 ),
-                Container(
-                    height: 50,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(10),
-                          bottomRight: Radius.circular(10)),
-                      color: Colors.yellow,
+                if (isLandscape)
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _showCategorySlider = !_showCategorySlider;
+                      });
+                    },
+                    child: Text(
+                      _showCategorySlider ? 'Search' : 'Categories',
+                      style: const TextStyle(
+                          color: Colors.black54, fontSize: 18),
                     ),
-                    child: IconButton(
-                        onPressed: () {
-                          loadData('All');
-                        },
-                        icon: const Icon(Icons.search)))
+                  )
+                // icon: const Icon(
+                //   Icons.more_vert_outlined,
+                //   color: Colors.black,
+                // ))
               ],
             ),
-            const SizedBox(
-              height: 15,
-            ),
             SizedBox(
-              height: 40,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: data.categories.length,
-                itemBuilder: (ctx, index) {
-                  return Container(
-                      margin: const EdgeInsets.only(right: 10),
-                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 15),
-                      decoration: BoxDecoration(
-                          color: Colors.yellow,
-                          borderRadius: BorderRadius.circular(50)),
-                      child: TextButton(
-                          onPressed: () {
-                            loadData(data.categories[index].categoryName);
-                          },
-                          child: Text(
-                            data.categories[index].categoryName,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                fontFamily: 'Nunito',
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500
-                                ),
-                          )));
-                },
-              ),
+              height: isLandscape ? 10 : 25,
             ),
-            const SizedBox(
-              height: 10,
+            isLandscape && _showCategorySlider
+                ? SizedBox(
+                    height: 50,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: data.categories.length,
+                      itemBuilder: (ctx, index) {
+                        return Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.circular(50)),
+                            child: TextButton(
+                                onPressed: () {
+                                  loadData(data.categories[index].categoryName);
+                                },
+                                child: Text(
+                                  data.categories[index].categoryName,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Nunito',
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500),
+                                )));
+                      },
+                    ),
+                  )
+                : Row(
+                    children: [
+                      Flexible(
+                        child: Container(
+                          height: 50,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10)),
+                            color: Colors.white,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: TextField(
+                              cursorColor: Colors.white30,
+                              textInputAction: TextInputAction.done,
+                              keyboardType: TextInputType.text,
+                              controller: myController,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Find Recipe',
+                                  hintStyle: TextStyle(
+                                      fontFamily: 'Nunito', fontSize: 18)),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                          height: 50,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(10),
+                                bottomRight: Radius.circular(10)),
+                            color: Colors.yellow,
+                          ),
+                          child: IconButton(
+                              onPressed: () {
+                                loadData('All');
+                              },
+                              icon: const Icon(Icons.search)))
+                    ],
+                  ),
+            SizedBox(
+              height: isLandscape ? 5 : 15,
+            ),
+            if (!isLandscape)
+              SizedBox(
+                height: 40,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: data.categories.length,
+                  itemBuilder: (ctx, index) {
+                    return Container(
+                        margin: const EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        decoration: BoxDecoration(
+                            color: Colors.yellow,
+                            borderRadius: BorderRadius.circular(50)),
+                        child: TextButton(
+                            onPressed: () {
+                              loadData(data.categories[index].categoryName);
+                            },
+                            child: Text(
+                              data.categories[index].categoryName,
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: 'Nunito',
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500),
+                            )));
+                  },
+                ),
+              ),
+            SizedBox(
+              height: isLandscape ? 5 : 10,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -204,19 +264,21 @@ class _HomePageState extends State<HomePage> {
             if (_showFav)
               _isLoading
                   ? ProgressIndicatorWidget()
-                  : data.recipesFav.isEmpty? const Padding(
-                      padding: EdgeInsets.only(top: 150),
-                      child: Center(
-                        child: Text(
-                          'No Saved Recipe',
-                          style: TextStyle(
-                            fontFamily: 'Nunito',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 18,
+                  : data.recipesFav.isEmpty
+                      ? const Padding(
+                          padding: EdgeInsets.only(top: 150),
+                          child: Center(
+                            child: Text(
+                              'No Saved Recipe',
+                              style: TextStyle(
+                                fontFamily: 'Nunito',
+                                fontWeight: FontWeight.w400,
+                                fontSize: 18,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ) : RecipeGrid(recipe: data.recipesFav)
+                        )
+                      : RecipeGrid(recipe: data.recipesFav)
             else
               myController.text.isEmpty || data.recipes.isEmpty
                   ? const Padding(

@@ -11,26 +11,25 @@ class RecipeGrid extends StatelessWidget {
     required this.recipe,
   });
 
-
   @override
   Widget build(BuildContext context) {
-
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
     return Flexible(
-        child: GridView.builder(
-          shrinkWrap: true,
-          itemCount: recipe.length > 20 ? 20 : recipe.length,
-          gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 1,
-            childAspectRatio: 1.5,
-            crossAxisSpacing: 0,
-            mainAxisSpacing: 0,
-          ),
-          itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
-            value: recipe[i],
-            child: RecipeItem(),
-          ),
+      child: GridView.builder(
+        shrinkWrap: true,
+        itemCount: recipe.length > 21 ? 21 : recipe.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: isLandscape ? 3 : 1,
+          childAspectRatio: isLandscape? 1.3 : 1.5,
+          crossAxisSpacing: 0,
+          mainAxisSpacing: 0,
         ),
-      );
+        itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+          value: recipe[i],
+          child: RecipeItem(),
+        ),
+      ),
+    );
   }
 }

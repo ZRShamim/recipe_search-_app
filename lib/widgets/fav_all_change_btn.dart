@@ -13,7 +13,7 @@ class FavAllChangeBtn extends StatelessWidget {
         fontFamily: 'Nunito',
         fontWeight: FontWeight.w400,
         fontSize: 16,
-        color: Colors.amber
+        color: Colors.black54
       ),
     );
   }

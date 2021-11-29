@@ -255,7 +255,7 @@ class _HomePageState extends State<HomePage> {
                       _showFav = !_showFav;
                     });
                   },
-                  child: FavAllChangeBtn(_showFav ? 'Show Saved' : 'See All'),
+                  child: FavAllChangeBtn(_showFav ? 'See All' : 'Show Saved'),
                 )
               ],
             ),

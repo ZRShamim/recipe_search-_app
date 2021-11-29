@@ -24,7 +24,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
     final recipeDescription = recipeData['recipeDescription'];
     final recipeCategory = recipeData['recipeCategory'];
     final recipeArea = recipeData['recipeArea'];
-    var isSaved = recipeData['isSaved'];
+    final isSaved = recipeData['isSaved'];
     final saveId = recipeData['saveId'];
 
     void removeSavedRecipe() {

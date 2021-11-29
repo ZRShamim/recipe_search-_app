@@ -48,6 +48,14 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void hideKeyboard() {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+  }
+
   @override
   void didChangeDependencies() {
     if (_isInit) {
@@ -115,8 +123,8 @@ class _HomePageState extends State<HomePage> {
                     },
                     child: Text(
                       _showCategorySlider ? 'Search' : 'Categories',
-                      style:
-                          const TextStyle(color: Colors.black54, fontSize: 18),
+                      style: const TextStyle(
+                          color: Colors.black54, fontSize: 18),
                     ),
                   )
               ],
@@ -133,13 +141,15 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (ctx, index) {
                         return Container(
                             margin: const EdgeInsets.only(right: 10),
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 15),
                             decoration: BoxDecoration(
                                 color: Colors.yellow,
                                 borderRadius: BorderRadius.circular(50)),
                             child: TextButton(
                                 onPressed: () {
-                                  loadData(data.categories[index].categoryName);
+                                  loadData(
+                                      data.categories[index].categoryName);
                                 },
                                 child: Text(
                                   data.categories[index].categoryName,
@@ -167,9 +177,13 @@ class _HomePageState extends State<HomePage> {
                             padding: const EdgeInsets.only(left: 20),
                             child: TextField(
                               cursorColor: Colors.white30,
-                              textInputAction: TextInputAction.done,
+                              textInputAction: TextInputAction.search,
                               keyboardType: TextInputType.text,
                               controller: myController,
+                              onEditingComplete: () {
+                                loadData('All');
+                                hideKeyboard();
+                              },
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
                                   hintText: 'Find Recipe',
@@ -190,6 +204,7 @@ class _HomePageState extends State<HomePage> {
                           child: IconButton(
                               onPressed: () {
                                 loadData('All');
+                                hideKeyboard();
                               },
                               icon: const Icon(Icons.search)))
                     ],
@@ -249,7 +264,8 @@ class _HomePageState extends State<HomePage> {
                   ? ProgressIndicatorWidget()
                   : data.recipesFav.isEmpty
                       ? Padding(
-                          padding: EdgeInsets.only(top: isLandscape ? 80 : 150),
+                          padding:
+                              EdgeInsets.only(top: isLandscape ? 80 : 150),
                           child: const Center(
                             child: Text(
                               'No Saved Recipe',

@@ -71,9 +71,7 @@ Firbase: For saving the recipe.
 ## To-DO
 ```
 ├── Add User Authentication
-├── Remove saved recipe
-├── Add more information in detail page
-└── Add category Slider
+└── Add more information in detail page
 ```
 
 ## Getting Started

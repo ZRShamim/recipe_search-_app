@@ -15,17 +15,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var _isLoading = false;
   var _showFav = false;
-  var _showAll = true;
   var _isInit = true;
   var _showCategorySlider = false;
   TextEditingController myController = TextEditingController();
   Future<void> loadData(String cat) async {
-    // print(cat);
     setState(() {
+      _showFav = false;
       _isLoading = true;
     });
     try {
-      // print(cat);
       await Provider.of<RecipesProvieder>(context, listen: false)
           .fetchAndSetRecipeCategory(myController.text, cat);
     } catch (error) {
@@ -117,14 +115,10 @@ class _HomePageState extends State<HomePage> {
                     },
                     child: Text(
                       _showCategorySlider ? 'Search' : 'Categories',
-                      style: const TextStyle(
-                          color: Colors.black54, fontSize: 18),
+                      style:
+                          const TextStyle(color: Colors.black54, fontSize: 18),
                     ),
                   )
-                // icon: const Icon(
-                //   Icons.more_vert_outlined,
-                //   color: Colors.black,
-                // ))
               ],
             ),
             SizedBox(
@@ -237,37 +231,26 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _showAll
-                    ? ResultTitle('Search Result')
-                    : ResultTitle('Saved Recipe'),
-                _showAll
-                    ? TextButton(
-                        onPressed: () {
-                          setState(() {
-                            _showFav = true;
-                            _showAll = false;
-                          });
-                        },
-                        child: FavAllChangeBtn('Show Saved'),
-                      )
-                    : TextButton(
-                        onPressed: () {
-                          setState(() {
-                            _showFav = false;
-                            _showAll = true;
-                          });
-                        },
-                        child: FavAllChangeBtn('See All'),
-                      ),
+                _showFav
+                    ? ResultTitle('Saved Recipe')
+                    : ResultTitle('Search Result'),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _showFav = !_showFav;
+                    });
+                  },
+                  child: FavAllChangeBtn(_showFav ? 'Show Saved' : 'See All'),
+                )
               ],
             ),
             if (_showFav)
               _isLoading
                   ? ProgressIndicatorWidget()
                   : data.recipesFav.isEmpty
-                      ? const Padding(
-                          padding: EdgeInsets.only(top: 150),
-                          child: Center(
+                      ? Padding(
+                          padding: EdgeInsets.only(top: isLandscape ? 80 : 150),
+                          child: const Center(
                             child: Text(
                               'No Saved Recipe',
                               style: TextStyle(
@@ -281,9 +264,9 @@ class _HomePageState extends State<HomePage> {
                       : RecipeGrid(recipe: data.recipesFav)
             else
               myController.text.isEmpty || data.recipes.isEmpty
-                  ? const Padding(
-                      padding: EdgeInsets.only(top: 150),
-                      child: Center(
+                  ? Padding(
+                      padding: EdgeInsets.only(top: isLandscape ? 80 : 150),
+                      child: const Center(
                         child: Text(
                           'Search For Recipe',
                           style: TextStyle(

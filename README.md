@@ -8,14 +8,26 @@
   <tr>
     <td>Splash Screen</td>
      <td>Search Result Page</td>
-     <td>Saved Recipe</td>
      <td>Details Page</td>
   </tr>
   <tr>
     <td><img src="https://raw.githubusercontent.com/ZRShamim/recipe_search-_app/main/assets/screenshots/splash_screen.png" width=270 ></td>
     <td><img src="https://raw.githubusercontent.com/ZRShamim/recipe_search-_app/main/assets/screenshots/save_page.png" width=270 ></td>
-    <td><img src="https://raw.githubusercontent.com/ZRShamim/recipe_search-_app/main/assets/screenshots/search_recipe_page.png" width=270 ></td>
     <td><img src="https://raw.githubusercontent.com/ZRShamim/recipe_search-_app/main/assets/screenshots/recipe_details.png" width=270 ></td>
+  </tr>
+ </table>
+ <table>
+  <tr>
+    <td>Recipe Details</td>
+    <td><img src="https://github.com/ZRShamim/recipe_search-_app/blob/main/assets/screenshots/l_saved_rec.png" width=620  ></td>
+  </tr>
+  <tr>
+    <td>Recipe list with Search Bar</td>
+    <td><img src="https://raw.githubusercontent.com/ZRShamim/recipe_search-_app/main/assets/screenshots/l_saved_rec.png" width=620  ></td>
+  </tr>
+  <tr>
+    <td>Recipe list with Category Slider</td>
+    <td><img src="https://raw.githubusercontent.com/ZRShamim/recipe_search-_app/main/assets/screenshots/l_saved_rec_2.png" width=620  ></td>
   </tr>
  </table>
 

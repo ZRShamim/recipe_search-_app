@@ -52,21 +52,21 @@ class RecipesProvieder with ChangeNotifier {
     }
   }
 
-  // Save recipe in firbase
   Future<void> saveRecipe(
-      String recipeId,
-      String recipeName,
-      String recipeImage,
-      String recipeDescription,
-      String recipeCategory,
-      String recipeArea) async {
+    String recipeId,
+    String recipeName,
+    String recipeImage,
+    String recipeDescription,
+    String recipeCategory,
+    String recipeArea,
+  ) async {
     const url =
         'https://recipesearchapp-aada5-default-rtdb.asia-southeast1.firebasedatabase.app/favorite.json';
     var _isSaved = false;
     try {
       final res = await http.get(Uri.parse(url));
       final extractedData = json.decode(res.body) as Map<String, dynamic>?;
-      final List<Recipe> _loadedRecipe = [];
+
       if (extractedData != null) {
         extractedData.forEach((key, data) {
           if (recipeId == data['recipeId']) {
@@ -84,16 +84,18 @@ class RecipesProvieder with ChangeNotifier {
               'recipeDescription': recipeDescription,
               'recipeCategory': recipeCategory,
               'recipeArea': recipeArea,
+              'isSaved': true,
             }),
           );
           final newSave = Recipe(
             recipeId: recipeId,
-            saveId: json.decode(response.body)['name'],
             recipeName: recipeName,
             recipeImage: recipeImage,
             recipeDescription: recipeDescription,
             recipeCategory: recipeCategory,
             recipeArea: recipeArea,
+            saveId: json.decode(response.body)['name'],
+            isSaved: true,
           );
           _recipesFav.add(newSave);
           notifyListeners();
@@ -104,7 +106,7 @@ class RecipesProvieder with ChangeNotifier {
       }
       if (!_isSaved) {
         try {
-          final respon = await http.post(
+          final response = await http.post(
             Uri.parse(url),
             body: json.encode({
               'recipeId': recipeId,
@@ -113,16 +115,18 @@ class RecipesProvieder with ChangeNotifier {
               'recipeDescription': recipeDescription,
               'recipeCategory': recipeCategory,
               'recipeArea': recipeArea,
+              'isSaved': true,
             }),
           );
           final newSave = Recipe(
             recipeId: recipeId,
-            saveId: json.decode(respon.body)['name'],
             recipeName: recipeName,
             recipeImage: recipeImage,
             recipeDescription: recipeDescription,
             recipeCategory: recipeCategory,
             recipeArea: recipeArea,
+            saveId: json.decode(response.body)['name'],
+            isSaved: true,
           );
           _recipesFav.add(newSave);
           notifyListeners();
@@ -135,13 +139,13 @@ class RecipesProvieder with ChangeNotifier {
     }
   }
 
-  // Fetch the saved recipe from firebase
+
   Future<void> fetchAndSetSavedRecipe() async {
     const url =
         'https://recipesearchapp-aada5-default-rtdb.asia-southeast1.firebasedatabase.app/favorite.json';
     try {
-      final respons = await http.get(Uri.parse(url));
-      final extractedData = json.decode(respons.body) as Map<String, dynamic>?;
+      final response = await http.get(Uri.parse(url));
+      final extractedData = json.decode(response.body) as Map<String, dynamic>?;
       final List<Recipe> loadedRecipe = [];
       if (extractedData != null) {
         extractedData.forEach((key, data) {
@@ -151,7 +155,9 @@ class RecipesProvieder with ChangeNotifier {
               recipeImage: data['recipeImage'],
               recipeDescription: data['recipeDescription'],
               recipeCategory: data['recipeCategory'],
-              recipeArea: data['recipeArea']));
+              recipeArea: data['recipeArea'],
+              saveId: key,
+              isSaved: data['isSaved']));
         });
         _recipesFav = loadedRecipe;
         notifyListeners();
@@ -161,25 +167,27 @@ class RecipesProvieder with ChangeNotifier {
     }
   }
 
-  // Didn't implemented yet
-  Future<void> deleteProduct(String saveId) async {
-    const url =
-        'https://recipesearchapp-aada5-default-rtdb.asia-southeast1.firebasedatabase.app/favorite.json';
-    final existingProductIndex =
-        _recipesFav.indexWhere((item) => item.saveId == saveId);
-    Recipe? existingProduct = _recipesFav[existingProductIndex];
-    _recipesFav.removeAt(existingProductIndex);
+  Future<void> deleteRecipe(String saveId) async {
+    final url =
+        'https://recipesearchapp-aada5-default-rtdb.asia-southeast1.firebasedatabase.app/favorite/$saveId.json';
+    final existingRecipeIndex =
+        _recipesFav.indexWhere((recipe) => recipe.saveId == saveId);
+    // print(existingRecipeIndex);
+    Recipe? existingRecipe = _recipesFav[existingRecipeIndex];
+    _recipesFav.removeAt(existingRecipeIndex);
     notifyListeners();
     final response = await http.delete(Uri.parse(url));
     if (response.statusCode >= 400) {
-      _recipesFav.insert(existingProductIndex, existingProduct);
+      _recipesFav.insert(existingRecipeIndex, existingRecipe);
       notifyListeners();
+
+      // throw HttpException('Could Not Delete Recipe.');
     }
-    existingProduct = null;
+    existingRecipe = null;
+    notifyListeners();
   }
 
   Future<void> fetchAndSetRecipeCategory(String text, String category) async {
-    // print(category);
     final url = 'https://www.themealdb.com/api/json/v1/1/search.php?s=$text';
     try {
       final response = await http.get(Uri.parse(url));

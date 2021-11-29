@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_search_app/pages/hompage.dart';
 import 'package:recipe_search_app/providers/recipe_provider.dart';
 import 'package:recipe_search_app/widgets/tag_widget.dart';
 
@@ -21,6 +22,36 @@ class _RecipeDetailsState extends State<RecipeDetails> {
     final recipeDescription = recipeData['recipeDescription'];
     final recipeCategory = recipeData['recipeCategory'];
     final recipeArea = recipeData['recipeArea'];
+    final isSaved = recipeData['isSaved'];
+    final saveId = recipeData['saveId'];
+
+    void removeSavedRecipe() {
+      showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+                title: const Text('Are you sure?'),
+                content: const Text('Do you want to remove the saved recipe?'),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                      },
+                      child: const Text('No')),
+                  TextButton(
+                      onPressed: () {
+                        recipe.deleteRecipe(saveId);
+                        Navigator.of(ctx).popAndPushNamed(HomePage.routeName);
+                      },
+                      child: const Text('yes')),
+                ],
+              ));
+    }
+
+    void saveRecipe() {
+      recipe.saveRecipe(recipeId, recipeName, recipeImage, recipeDescription,
+          recipeCategory, recipeArea);
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -29,15 +60,12 @@ class _RecipeDetailsState extends State<RecipeDetails> {
         actions: [
           TextButton(
             onPressed: () {
-              recipe.saveRecipe(recipeId, recipeName, recipeImage,
-                  recipeDescription, recipeCategory, recipeArea);
+              !isSaved ? saveRecipe() : removeSavedRecipe();
               setState(() {});
             },
-            child: const Text('Save',
-              style: TextStyle(
-                color: Colors.amber,
-                fontSize: 20
-              ),
+            child: Text(
+              isSaved ? 'Saved' : 'Save',
+              style: const TextStyle(color: Colors.amber, fontSize: 20),
             ),
           ),
         ],

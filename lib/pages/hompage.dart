@@ -17,7 +17,6 @@ class _HomePageState extends State<HomePage> {
   var _showFav = false;
   var _showAll = true;
   var _isInit = true;
-  var _active = false;
   TextEditingController myController = TextEditingController();
   Future<void> loadData(String cat) async {
     // print(cat);
@@ -205,7 +204,19 @@ class _HomePageState extends State<HomePage> {
             if (_showFav)
               _isLoading
                   ? ProgressIndicatorWidget()
-                  : RecipeGrid(recipe: data.recipesFav)
+                  : data.recipesFav.isEmpty? const Padding(
+                      padding: EdgeInsets.only(top: 150),
+                      child: Center(
+                        child: Text(
+                          'No Saved Recipe',
+                          style: TextStyle(
+                            fontFamily: 'Nunito',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ) : RecipeGrid(recipe: data.recipesFav)
             else
               myController.text.isEmpty || data.recipes.isEmpty
                   ? const Padding(

@@ -15,6 +15,8 @@ class RecipeItem extends StatelessWidget {
       'recipeDescription': recipe.recipeDescription,
       'recipeCategory': recipe.recipeCategory,
       'recipeArea': recipe.recipeArea,
+      'isSaved': recipe.isSaved,
+      'saveId': recipe.saveId
     };
     return Padding(
       padding: const EdgeInsets.all(10),

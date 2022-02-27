@@ -1,7 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.recipe_search_app">
+    package="com.zrs.recipe_search_app">
+
+   <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="recipe_search_app"
+        android:label="Make a Dish"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

@@ -139,13 +139,12 @@ class RecipesProvieder with ChangeNotifier {
     }
   }
 
-
   Future<void> fetchAndSetSavedRecipe() async {
     const url =
         'https://recipesearchapp-aada5-default-rtdb.asia-southeast1.firebasedatabase.app/favorite.json';
     try {
       final response = await http.get(Uri.parse(url));
-      final extractedData = json.decode(response.body) as Map<String, dynamic>?;
+      final extractedData = json.decode(response.body);
       final List<Recipe> loadedRecipe = [];
       if (extractedData != null) {
         extractedData.forEach((key, data) {

@@ -6,6 +6,8 @@ import 'package:recipe_search_app/widgets/tag_widget.dart';
 class RecipeDetails extends StatefulWidget {
   static const routeName = '/recipe-details';
 
+  const RecipeDetails({Key? key}) : super(key: key);
+
   @override
   State<RecipeDetails> createState() => _RecipeDetailsState();
 }
@@ -91,7 +93,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
 }
 
 class PortraitView extends StatelessWidget {
-  PortraitView({
+  const PortraitView({
     required this.recipeName,
     required this.recipeCategory,
     required this.recipeArea,
@@ -176,7 +178,7 @@ class PortraitView extends StatelessWidget {
 }
 
 class LandscapeView extends StatelessWidget {
-  LandscapeView({
+  const LandscapeView({
     required this.recipeImage,
     required this.recipeName,
     required this.recipeCategory,

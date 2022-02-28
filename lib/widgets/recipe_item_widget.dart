@@ -5,6 +5,8 @@ import 'package:recipe_search_app/providers/recipe.dart';
 import 'package:recipe_search_app/widgets/tag_widget.dart';
 
 class RecipeItem extends StatelessWidget {
+  const RecipeItem({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final recipe = Provider.of<Recipe>(context);

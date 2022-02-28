@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Tag extends StatelessWidget {
-  String tag;
-  Color color;
-  Tag(this.tag, this.color);
+  final String tag;
+  final Color color;
+  const Tag(this.tag, this.color);
 
   @override
   Widget build(BuildContext context) {

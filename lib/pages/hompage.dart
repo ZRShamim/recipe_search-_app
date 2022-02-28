@@ -8,6 +8,8 @@ import 'package:recipe_search_app/widgets/progress_indicator.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home-page';
+
+  const HomePage({Key? key}) : super(key: key);
   @override
   State<HomePage> createState() => _HomePageState();
 }

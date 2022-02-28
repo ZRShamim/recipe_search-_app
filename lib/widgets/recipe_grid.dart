@@ -7,7 +7,7 @@ import 'package:recipe_search_app/widgets/recipe_item_widget.dart';
 
 class RecipeGrid extends StatelessWidget {
   final List<Recipe> recipe;
-  RecipeGrid({
+  const RecipeGrid({
     required this.recipe,
   });
 
